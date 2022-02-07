@@ -2,6 +2,19 @@
   require_once "auth.php";
   require_once "../config.php";
   
+  $title = $_REQUEST['title'];
+  $author = $_REQUEST['author'];
+  $category = $_REQUEST['category'];
+  $date = $_REQUEST['date'];
+  $thumbnails = $_REQUEST['thumbnails'];
+  $video = $_REQUEST['video'];
+
+  $sql = "INSERT INTO users VALUES($title, $author, $category, $date, $thumbnails, $video)";
+  if(mysqli_query($db, $sql)){
+    echo "success data stored";
+  }else{
+    echo "errror " . mysqli_error($db);
+  }
 ?>
 <!DOCTYPE html>
 <html lang="en">
