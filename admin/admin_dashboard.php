@@ -1,20 +1,34 @@
 <?php 
   require_once "auth.php";
   require_once "../config.php";
-  
-  $title = $_REQUEST['title'];
-  $author = $_REQUEST['author'];
-  $category = $_REQUEST['category'];
-  $date = $_REQUEST['date'];
-  $thumbnails = $_REQUEST['thumbnails'];
-  $video = $_REQUEST['video'];
 
-  $sql = "INSERT INTO users VALUES($title, $author, $category, $date, $thumbnails, $video)";
-  if(mysqli_query($db, $sql)){
-    echo "success data stored";
-  }else{
-    echo "errror " . mysqli_error($db);
-  }
+  $database = mysqli_connect("localhost", "root", "", "desafilm");
+
+  
+  // print_r($video);
+  
+  if(isset($_POST['uplode'])){
+		$title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING);
+		$author = filter_input(INPUT_POST, 'author', FILTER_SANITIZE_STRING);
+		$category = filter_input(INPUT_POST, 'category', FILTER_SANITIZE_STRING);
+		$date = filter_input(INPUT_POST, 'date', FILTER_SANITIZE_STRING);
+    
+
+		$sql = "INSERT INTO video (title, author, category, date)
+		VALUES (:title, :author, :category, :date)";
+		$stmt = $db->prepare($sql);
+
+
+		$params = array(
+			":title" => $title,
+			":author" => $author,
+			":category" => $category,
+			":date" => $date,
+		);
+
+		$saved = $stmt->execute($params);
+		if($saved) header("Location: admin_dashboard.php");
+	}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -420,38 +434,38 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                <form>
+                <form action="" method="POST">
                   <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Title</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                    <input type="text" name="title" class="form-control" id="exampleInputEmail1"
+                      aria-describedby="emailHelp">
                   </div>
                   <div class="mb-3">
                     <label for="exampleInputPassword1" class="form-label">Date</label>
-                    <input type="date" class="form-control" id="exampleInputPassword1">
+                    <input type="date" name="date" class="form-control" id="exampleInputPassword1">
                   </div>
                   <div class="mb-3">
                     <label for="exampleInputPassword1" class="form-label">Author</label>
-                    <input type="text" class="form-control" id="exampleInputPassword1">
+                    <input type="text" name="author" class="form-control" id="exampleInputPassword1">
                   </div>
                   <div class="mb-3">
                     <label for="exampleInputPassword1" class="form-label">Category</label>
-                    <input type="text" class="form-control" id="exampleInputPassword1">
+                    <input type="text" name="category" class="form-control" id="exampleInputPassword1">
                   </div>
                   <div class="mb-3">
                     <label for="exampleInputPassword1" class="form-label">thumbnails</label>
-                    <input type="file" class="form-control" id="exampleInputPassword1">
+                    <input type="file" name="thumbnails" class="form-control" id="exampleInputPassword1">
                   </div>
                   <div class="mb-3">
                     <label for="exampleInputPassword1" class="form-label">video</label>
-                    <input type="file" class="form-control" id="exampleInputPassword1">
+                    <input type="file" name="video" class="form-control" id="exampleInputPassword1">
                   </div>
-
-                </form>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-danger">Uplode now</button>
+                <button type="submit" name="uplode" class="btn btn-danger">Uplode now</button>
               </div>
+              </form>
             </div>
           </div>
         </div>
@@ -459,44 +473,60 @@
           <thead>
             <tr>
               <th scope="col">No</th>
-              <th scope="col">Date</th>
+              <th scope="col">Title</th>
               <th scope="col">Author</th>
               <th scope="col">Category</th>
-              <th scope="col">Title</th>
+              <th scope="col">Date</th>
               <th scope="col">thumbnail</th>
               <th scope="col">video</th>
+              <th scope="col">Action</th>
             </tr>
           </thead>
           <tbody>
+            <?php
+            $showdata = 'SELECT * FROM video';
+            $result = mysqli_query($database, $showdata);
+            while($row = mysqli_fetch_array($result)){
+            ?>
             <tr>
-              <th scope="row">1</th>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>Otto</td>
-              <td>Otto</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>Jacob</td>
-              <td>Thornton</td>
-              <td>Thornton</td>
-              <td>Thornton</td>
-              <td>Thornton</td>
-              <td>@fat</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td colspan="2">Larry the Bird</td>
-              <td>@twitter</td>
-              <td>@twitter</td>
-              <td>@twitter</td>
-              <td>@twitter</td>
+              <th scope="row"><?php echo $row['id']; ?></th>
+              <td><?php echo $row['title'] ?></td>
+              <td><?php echo $row['author'] ?></td>
+              <td><?php echo $row['category'] ?></td>
+              <td><?php echo $row['date'] ?></td>
+              <td><?php echo $row['thumbnails'] ?></td>
+              <td><?php echo $row['video'] ?></td>
+              <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">EDIT</button>
+            <button class="btn btn-danger">Delete</button></td>
+              <!-- Button trigger modal -->
+
+              <!-- Modal -->
+              <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      ...
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </tr>
           </tbody>
+          <?php 
+            }
+            ?>
         </table>
       </div>
+
       <!-- <div class="row mb-4">
         <div class="col-lg-8 col-md-6 mb-md-0 mb-4">
           <div class="card">
