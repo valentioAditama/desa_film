@@ -1,34 +1,5 @@
 <?php 
-  require_once "auth.php";
-  require_once "../config.php";
-
-  $database = mysqli_connect("localhost", "root", "", "desafilm");
-
-  
-  // print_r($video);
-  
-  if(isset($_POST['uplode'])){
-		$title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING);
-		$author = filter_input(INPUT_POST, 'author', FILTER_SANITIZE_STRING);
-		$category = filter_input(INPUT_POST, 'category', FILTER_SANITIZE_STRING);
-		$date = filter_input(INPUT_POST, 'date', FILTER_SANITIZE_STRING);
-    
-
-		$sql = "INSERT INTO video (title, author, category, date)
-		VALUES (:title, :author, :category, :date)";
-		$stmt = $db->prepare($sql);
-
-
-		$params = array(
-			":title" => $title,
-			":author" => $author,
-			":category" => $category,
-			":date" => $date,
-		);
-
-		$saved = $stmt->execute($params);
-		if($saved) header("Location: admin_dashboard.php");
-	}
+  include ("auth.php");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -39,7 +10,7 @@
   <link rel="apple-touch-icon" sizes="76x76" href="./assets/img/apple-icon.png">
   <link rel="icon" type="image/png" href="./assets/img/favicon.png">
   <title>
-    Material Dashboard 2 by Creative Tim
+    Dashboard Desafilm
   </title>
   <!--     Fonts and icons     -->
   <link rel="stylesheet" type="text/css"
@@ -421,113 +392,98 @@
         </div>
       </div>
       <div class="container-fluid">
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-          Add Files
-        </button>
-        <!-- Button trigger modal -->
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Uplode File video</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                <form action="" method="POST">
-                  <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">Title</label>
-                    <input type="text" name="title" class="form-control" id="exampleInputEmail1"
-                      aria-describedby="emailHelp">
-                  </div>
-                  <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">Date</label>
-                    <input type="date" name="date" class="form-control" id="exampleInputPassword1">
-                  </div>
-                  <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">Author</label>
-                    <input type="text" name="author" class="form-control" id="exampleInputPassword1">
-                  </div>
-                  <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">Category</label>
-                    <input type="text" name="category" class="form-control" id="exampleInputPassword1">
-                  </div>
-                  <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">thumbnails</label>
-                    <input type="file" name="thumbnails" class="form-control" id="exampleInputPassword1">
-                  </div>
-                  <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">video</label>
-                    <input type="file" name="video" class="form-control" id="exampleInputPassword1">
-                  </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" name="uplode" class="btn btn-danger">Uplode now</button>
-              </div>
-              </form>
-            </div>
-          </div>
-        </div>
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th scope="col">No</th>
-              <th scope="col">Title</th>
-              <th scope="col">Author</th>
-              <th scope="col">Category</th>
-              <th scope="col">Date</th>
-              <th scope="col">thumbnail</th>
-              <th scope="col">video</th>
-              <th scope="col">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php
-            $showdata = 'SELECT * FROM video';
+       <a href="uplode.php" class="btn btn-success">Add Files</a>        
+        <div class="container-fluid">
+          <table class="table table-striped">
+            <thead>
+              <tr class="table-active">
+                <th scope="col">No</th>
+                <th scope="col">Title</th>
+                <th scope="col">Author</th>
+                <th scope="col">Category</th>
+                <th scope="col">Date</th>
+                <th scope="col">thumbnail</th>
+                <th scope="col">video</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php
+              $database = mysqli_connect("localhost", "root", "", "desafilm");
+            $showdata = 'SELECT * FROM video ORDER BY id ASC';
             $result = mysqli_query($database, $showdata);
             while($row = mysqli_fetch_array($result)){
             ?>
-            <tr>
-              <th scope="row"><?php echo $row['id']; ?></th>
-              <td><?php echo $row['title'] ?></td>
-              <td><?php echo $row['author'] ?></td>
-              <td><?php echo $row['category'] ?></td>
-              <td><?php echo $row['date'] ?></td>
-              <td><?php echo $row['thumbnails'] ?></td>
-              <td><?php echo $row['video'] ?></td>
-              <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">EDIT</button>
-            <button class="btn btn-danger">Delete</button></td>
-              <!-- Button trigger modal -->
-
-              <!-- Modal -->
-              <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                      ...
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                      <button type="button" class="btn btn-primary">Save changes</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </tr>
-          </tbody>
-          <?php 
+              <tr>
+                <th scope="row"><?php echo $row['id']; ?></th>
+                <td><?php echo $row['title'] ?></td>
+                <td><?php echo $row['author'] ?></td>
+                <td><?php echo $row['category'] ?></td>
+                <td><?php echo $row['date'] ?></td>
+                <td><?php echo $row['thumbnails'] ?></td>
+                <td><?php echo $row['video'] ?></td>
+                <td>
+                  <button type="button" class="btn btn-primary" data-bs-toggle="modaledit" data-bs-target="#modaledit">
+                    Edit Files
+                  </button>
+                  <a href="delete.php?id=<?php echo $row['id'] ?>" class="btn btn-danger">Delete</a>
+                </td>
+              </tr>
+            </tbody>
+            <?php 
             }
-            ?>
-        </table>
+          ?>
+          </table>
+        </div>
       </div>
-
-      <!-- <div class="row mb-4">
+      <div class="modal fade" id="modaledit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form action="" method="POST" enctype="multipart/form-data">
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">Title</label>
+                  <input type="text" name="title" class="form-control" id="exampleInputEmail1"
+                    aria-describedby="emailHelp">
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputPassword1" class="form-label">Date</label>
+                  <input type="date" name="date" class="form-control" id="exampleInputPassword1">
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputPassword1" class="form-label">Author</label>
+                  <input type="text" name="author" class="form-control" id="exampleInputPassword1">
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputPassword1" class="form-label">Category</label>
+                  <input type="text" name="category" class="form-control" id="exampleInputPassword1">
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputPassword1" class="form-label">thumbnails</label>
+                  <input type="file" name="thumbnails" class="form-control" id="exampleInputPassword1">
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputPassword1" class="form-label">video</label>
+                  <input type="file" name="video" class="form-control" id="exampleInputPassword1">
+                </div>
+            </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="row mb-4">
         <div class="col-lg-8 col-md-6 mb-md-0 mb-4">
           <div class="card">
             <div class="card-header pb-0">
@@ -872,7 +828,7 @@
           </div>
         </div>
       </div> -->
-      <!-- <footer class="footer py-4  ">
+    <!-- <footer class="footer py-4  ">
         <div class="container-fluid">
           <div class="row align-items-center justify-content-lg-between">
             <div class="col-lg-6 mb-lg-0 mb-4">
@@ -994,6 +950,25 @@
   <script src="./assets/js/plugins/smooth-scrollbar.min.js"></script>
   <script src="./assets/js/plugins/chartjs.min.js"></script>
   <script>
+    $('#modaledit').on('show.bs.modal', function (event) {
+      // event.relatedtarget menampilkan elemen mana yang digunakan saat diklik.
+      var button = $(event.relatedTarget)
+
+      // data-data yang disimpan pada tombol edit dimasukkan ke dalam variabelnya masing-masing 
+      var nama_barang = button.data('nama_barang')
+      var deskripsi_barang = button.data('deskripsi_barang')
+      var jenis_barang = button.data('jenis_barang')
+      var harga_barang = button.data('harga_barang')
+      var modal = $(this)
+
+      //variabel di atas dimasukkan ke dalam element yang sesuai dengan idnya masing-masing
+      modal.find('#nama_barang').val(nama_barang)
+      modal.find('#deskripsi_barang').val(deskripsi_barang)
+      modal.find('#jenis_barang').val(jenis_barang)
+      modal.find('#harga_barang').val(harga_barang)
+    })
+
+
     var ctx = document.getElementById("chart-bars").getContext("2d");
 
     new Chart(ctx, {
