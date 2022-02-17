@@ -1,24 +1,6 @@
 <?php 
-	require_once "../config.php";
-
-	if(isset($_POST['register'])){
-		$name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
-		$username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
-		$password = password_hash($_POST["password"], PASSWORD_DEFAULT);
-
-		$sql = "INSERT INTO users (username, name, password)
-		VALUES (:username, :name, :password)";
-		$stmt = $db->prepare($sql);
-
-		$params = array(
-			":name" => $name,
-			":username" => $username,
-			":password" => $password
-		);
-
-		$saved = $stmt->execute($params);
-		if($saved) header("Location: index.php");
-	}
+	require_once 'logic.php';
+	register();
 ?>
 
 <!DOCTYPE html>

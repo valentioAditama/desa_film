@@ -1,5 +1,10 @@
 <?php 
-  include ("auth.php");
+  require "logic.php";
+  require "hapus.php";
+  connectDB();
+  login();
+  auth();
+  uplode();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -392,7 +397,52 @@
         </div>
       </div>
       <div class="container-fluid">
-       <a href="uplode.php" class="btn btn-success">Add Files</a>        
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+          Add Data
+        </button>
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form action="" method="post" enctype="multipart/form-data">
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Title</label>
+                    <input type="text" name="title" class="form-control" id="exampleInputEmail1"
+                      aria-describedby="emailHelp">
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Date</label>
+                    <input type="date" name="date" class="form-control" id="exampleInputPassword1">
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Author</label>
+                    <input type="text" name="author" class="form-control" id="exampleInputPassword1">
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Category</label>
+                    <input type="text" name="category" class="form-control" id="exampleInputPassword1">
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">thumbnails</label>
+                    <input type="file" name="thumbnails" class="form-control" id="exampleInputPassword1">
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">video</label>
+                    <input type="file" name="video" class="form-control" id="exampleInputPassword1">
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="submit" name="uplode" class="btn btn-primary">Save changes</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
         <div class="container-fluid">
           <table class="table table-striped">
             <thead>
@@ -409,10 +459,10 @@
             </thead>
             <tbody>
               <?php
-              $database = mysqli_connect("localhost", "root", "", "desafilm");
-            $showdata = 'SELECT * FROM video ORDER BY id ASC';
-            $result = mysqli_query($database, $showdata);
-            while($row = mysqli_fetch_array($result)){
+                global $conn2;
+                $showdata = 'SELECT * FROM video ORDER BY id ASC';
+                $result = mysqli_query($conn2, $showdata);
+                while($row = mysqli_fetch_array($result)){
             ?>
               <tr>
                 <th scope="row"><?php echo $row['id']; ?></th>
@@ -423,10 +473,7 @@
                 <td><?php echo $row['thumbnails'] ?></td>
                 <td><?php echo $row['video'] ?></td>
                 <td>
-                  <button type="button" class="btn btn-primary" data-bs-toggle="modaledit" data-bs-target="#modaledit">
-                    Edit Files
-                  </button>
-                  <a href="delete.php?id=<?php echo $row['id'] ?>" class="btn btn-danger">Delete</a>
+                  <a href="hapus.php?id<?php echo $row['id']?>" class="btn btn-danger">Delete</a>
                 </td>
               </tr>
             </tbody>
@@ -434,52 +481,6 @@
             }
           ?>
           </table>
-        </div>
-      </div>
-      <div class="modal fade" id="modaledit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <form action="" method="POST" enctype="multipart/form-data">
-                <div class="mb-3">
-                  <label for="exampleInputEmail1" class="form-label">Title</label>
-                  <input type="text" name="title" class="form-control" id="exampleInputEmail1"
-                    aria-describedby="emailHelp">
-                </div>
-                <div class="mb-3">
-                  <label for="exampleInputPassword1" class="form-label">Date</label>
-                  <input type="date" name="date" class="form-control" id="exampleInputPassword1">
-                </div>
-                <div class="mb-3">
-                  <label for="exampleInputPassword1" class="form-label">Author</label>
-                  <input type="text" name="author" class="form-control" id="exampleInputPassword1">
-                </div>
-                <div class="mb-3">
-                  <label for="exampleInputPassword1" class="form-label">Category</label>
-                  <input type="text" name="category" class="form-control" id="exampleInputPassword1">
-                </div>
-                <div class="mb-3">
-                  <label for="exampleInputPassword1" class="form-label">thumbnails</label>
-                  <input type="file" name="thumbnails" class="form-control" id="exampleInputPassword1">
-                </div>
-                <div class="mb-3">
-                  <label for="exampleInputPassword1" class="form-label">video</label>
-                  <input type="file" name="video" class="form-control" id="exampleInputPassword1">
-                </div>
-            </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
-          </div>
         </div>
       </div>
     </div>

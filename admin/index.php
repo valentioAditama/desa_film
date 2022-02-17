@@ -1,35 +1,15 @@
 <?php
-	require_once('../config.php');
 
-if(isset($_POST['login'])){
-	$username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
-	$password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
+require 'logic.php';
+connectDB();
+register();
+login();
 
-	$sql = "SELECT * FROM users WHERE username=:username OR name=:name";
-	$stmt = $db->prepare($sql);
-
-	$params = array(
-		":username" => $username,
-		":name" => $name
-	);
-
-	$stmt->execute($params);
-
-	$user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-	if($user){
-		if(password_verify($password, $user["password"])){
-			session_start();
-			$_SESSION['user'] = $user;
-			header("Location: admin_dashboard.php");
-		}
-	}
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Login V10</title>
+	<title>Login Admin</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->	
