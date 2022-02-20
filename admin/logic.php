@@ -78,40 +78,39 @@ function auth(){
 }
 
 function uplode(){
-        if (isset($_POST['uplode'])) {
-            try {
-                if(isset($_POST['uplode'])){
-                $title = $_POST['title'];
-                $author = $_POST['author'];
-                $category = $_POST['category'];
-                $date = $_POST['date'];
-                $thumbnails = $_POST['thumbnails'];
-                $video = $_POST['video'];
-                
-                global $conn2;
+    if(isset($_POST['uplode'])){
+        $title = $_POST['title'];
+        $author = $_POST['author'];
+        $category = $_POST['category'];
+        $date = $_POST['date']; 
+        $thumbnails = $_POST['thumbnails'];
+        $video = $_POST['video'];
+        
+        global $conn2;
 
-                $sql = "INSERT INTO video (title, author, category, date , thumbnails, video) VALUES ('$title', '$author', '$category', '$date', '$thumbnails', '$video')";
-                $conn2->prepare($sql);
-
-                $params = array(
-                    "title" => $title,
-                    "author" => $author,
-                    "category" => $category,
-                    "date" => $date,
-                    "thumbnails" => $thumbnails,
-                    "video" => $video
-                );
-                
-                    $conn2->exec($params);  
-                }
-            } catch (PDOException $e){  
-                echo "error : " .$e->getMessage();
-        } 
+        $sql = "INSERT INTO video (title, author, category, date , thumbnails, video) VALUES ('$title', '$author', '$category', '$date', '$thumbnails', '$video')";
+        
+        mysqli_query($conn2, $sql);
+        header("Location: admin_dashboard.php");
     }
 }
 
-function delete(){
-    
+function edit(){
+    if (isset($_GET['id'])) {
+        $title = $_GET['title'];
+        $author = $_GET['author'];
+        $category = $_GET['category'];
+        $date = $_GET['date'];
+        $thumbnails = $_GET['thumbnails'];
+        $video = $_GET['video'];
+        
+        global $conn2;
+
+        $sql = "INSERT INTO video (title, author, category, date , thumbnails, video) VALUES ('$title', '$author', '$category', '$date', '$thumbnails', '$video')";
+        global $result2;
+        $result2 = mysqli_query($conn2, $sql);
+        header("Location: admin_dashboard.php");
+    }
 }
 
 function logout(){

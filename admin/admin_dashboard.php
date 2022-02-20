@@ -5,6 +5,7 @@
   login();
   auth();
   uplode();
+  edit();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -434,12 +435,12 @@
                     <label for="exampleInputPassword1" class="form-label">video</label>
                     <input type="file" name="video" class="form-control" id="exampleInputPassword1">
                   </div>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  <button type="submit" name="uplode" class="btn btn-primary">Save changes</button>
-                </div>
               </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" name="uplode" class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
             </form>
           </div>
         </div>
@@ -473,16 +474,71 @@
                 <td><?php echo $row['thumbnails']; ?></td>
                 <td><?php echo $row['video']; ?></td>
                 <td>
+                  <a href="?id<?php echo $row['id']; ?>" type="button" class="btn btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#updateuser">
+                    edit
+                  </a>
                   <a href='hapus.php?id=<?php echo $row['id']; ?>' class="btn btn-danger">Delete</a>
                 </td>
               </tr>
             </tbody>
-            <?php 
-            }
-          ?>
-          </table>
+            <div class="modal fade" id="updateuser" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+              aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <form action="" method="post" enctype="multipart/form-data">
+                      <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Title</label>
+                        <input type="text" name="title" class="form-control" id="exampleInputEmail1"
+                          aria-describedby="emailHelp" value="<?php echo $row2['title']; ?>">
+                      </div>
+                      <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Date</label>
+                        <input type="date" name="date" class="form-control" id="exampleInputPassword1">
+                      </div>
+                      <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Author</label>
+                        <input type="text" name="author" class="form-control" id="exampleInputPassword1">
+                      </div>
+                      <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Category</label>
+                        <input type="text" name="category" class="form-control" id="exampleInputPassword1">
+                      </div>
+                      <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">thumbnails</label>
+                        <input type="file" name="thumbnails" class="form-control" id="exampleInputPassword1">
+                      </div>
+                      <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">video</label>
+                        <input type="file" name="video" class="form-control" id="exampleInputPassword1">
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" name="edit" class="btn btn-primary">Save changes</button>
+                  </div>
+                </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Understood</button>
+              </div>
+            </div>
         </div>
       </div>
+
+      <?php 
+          }
+          ?>
+      </table>
+    </div>
+    </div>
     </div>
     </div>
   </main>
