@@ -13,6 +13,8 @@ function connectDB(){
         $conn = new PDO("mysql:host=$servername;dbname=desafilm", $username, $password);
         // set the PDO error mode to exception
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING ); 
+
         } catch(PDOException $e) {
         echo "Connection failed: " . $e->getMessage();
     }
@@ -20,11 +22,11 @@ function connectDB(){
 
 function register(){
     if(isset($_POST['register'])){
-        global $conn;
 		$name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
 		$username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
 		$password = password_hash($_POST["password"], PASSWORD_DEFAULT);
-
+        
+        global $conn;
 		$sql = "INSERT INTO users (username, name, password)
 		VALUES (:username, :name, :password)";
 		$stmt = $conn->prepare($sql);
