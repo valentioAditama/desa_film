@@ -95,21 +95,50 @@ function uplode(){
     }
 }
 
-function edit(){
-    if (isset($_GET['id'])) {
-        $title = $_GET['title'];
-        $author = $_GET['author'];
-        $category = $_GET['category'];
-        $date = $_GET['date'];
-        $thumbnails = $_GET['thumbnails'];
-        $video = $_GET['video'];
-        
-        global $conn2;
+function uplodefiles(){
+    if (isset($_POST['uplode'])) {
+        $AllowExtension = array('png', 'jpeg', 'jpg');
+        $nama = $_FILES['thumbnails']['name'];
+        $x = explode('.', $nama);
+        $extensi = strtolower(end($x));
+        $ukuran = $_FILES['file']['size'];
+        $file_tmp = $_FILES['file']['tmp_name'];
 
-        $sql = "INSERT INTO video (title, author, category, date , thumbnails, video) VALUES ('$title', '$author', '$category', '$date', '$thumbnails', '$video')";
-        global $result2;
-        $result2 = mysqli_query($conn2, $sql);
-        header("Location: admin_dashboard.php");
+        if(in_array($extensi, $AllowExtension) === true){
+            if ($ukuran < 1044070) {
+                move_uploaded_file($file_tmp, 'uploadsImage/'.$nama);
+                $q = "INSERT INTO video VALUES(NULL, '$nama')";
+                global $conn2;
+                $query = mysqli_query($conn2, $q);
+                if ($query) {
+                    echo "File Berhasil di uplode";
+                }else{
+                    echo "Gagal uplode gambar";
+                }
+            }else
+            {
+                echo "ektensi file yang di uplode tidak di perbolehkan";
+            }
+        }
+
+    }
+}
+
+function edit(){
+    if (isset($_POST['edit'] )) {
+        $id = $_POST['id'];
+        $title = $_POST['title'];
+        $author = $_POST['author'];
+        $category = $_POST['category'];
+        $date = $_POST['date'];
+        $thumbnails = $_POST['thumbnails'];
+        $video = $_POST['video'];
+
+        global $conn2;
+        
+        $sql = "UPDATE video SET title='$title', author='$author', category='$category', date='$date', thumbnails='$thumbnails', video='$video' WHERE id=$id";       
+        mysqli_query($conn2, $sql);
+        header("location: admin_dashboard.php");
     }
 }
 
