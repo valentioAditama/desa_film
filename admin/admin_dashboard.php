@@ -4,9 +4,8 @@
   connectDB();
   login();
   auth();
-  uplode();
   edit();
-  uplodefiles();
+  uplode();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,7 +17,7 @@
   <link rel="icon" type="image/png" href="./assets/img/favicon.png">
   <title>
     Dashboard Desafilm
-  </title>
+  </title><link rel="icon" href="/favicon.png">
   <!--     Fonts and icons     -->
   <link rel="stylesheet" type="text/css"
     href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
@@ -448,9 +447,9 @@
           </div>
         </div>
         <div class="container-fluid">
-          <table class="table table-striped">
+          <table class="table table-striped" border="5">
             <thead>
-              <tr class="table-active">
+              <tr class="table-active text-center">
                 <th scope="col">No</th>
                 <th scope="col">Title</th>
                 <th scope="col">Author</th>
@@ -468,13 +467,13 @@
                 $result = mysqli_query($conn2, $showdata);
                 while($row = mysqli_fetch_array($result)){
             ?>
-              <tr>
+              <tr class="text-center">
                 <th scope="row"><?php echo $row['id']; ?></th>
                 <td><?php echo $row['title']; ?></td>
                 <td><?php echo $row['author']; ?></td>
                 <td><?php echo $row['category']; ?></td>
                 <td><?php echo $row['date']; ?></td>
-                <td><?php echo $row['thumbnails']; ?></td>
+                <td><img height="100" src="uploadsImage/<?php echo $row['thumbnails']; ?>" alt=""></td>
                 <td><?php echo $row['video']; ?></td>
                 <td>
                   <a href="#" type="button" class="btn btn-primary" data-bs-toggle="modal"
