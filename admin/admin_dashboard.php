@@ -415,27 +415,27 @@
                   <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Title</label>
                     <input type="text" name="title" class="form-control" id="exampleInputEmail1"
-                      aria-describedby="emailHelp">
+                      aria-describedby="emailHelp" required>
                   </div>
                   <div class="mb-3">
                     <label for="exampleInputPassword1" class="form-label">Date</label>
-                    <input type="date" name="date" class="form-control" id="exampleInputPassword1">
+                    <input type="date" name="date" class="form-control" id="exampleInputPassword1" required>
                   </div>
                   <div class="mb-3">
                     <label for="exampleInputPassword1" class="form-label">Author</label>
-                    <input type="text" name="author" class="form-control" id="exampleInputPassword1">
+                    <input type="text" name="author" class="form-control" id="exampleInputPassword1" required>
                   </div>
                   <div class="mb-3">
                     <label for="exampleInputPassword1" class="form-label">Category</label>
-                    <input type="text" name="category" class="form-control" id="exampleInputPassword1">
+                    <input type="text" name="category" class="form-control" id="exampleInputPassword1" required>
                   </div>
                   <div class="mb-3">
                     <label for="exampleInputPassword1" class="form-label">thumbnails</label>
-                    <input type="file" name="thumbnails" class="form-control" id="exampleInputPassword1">
+                    <input type="file" name="thumbnails" class="form-control" id="exampleInputPassword1" required>
                   </div>
                   <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">video</label>
-                    <input type="file" name="video" class="form-control" id="exampleInputPassword1">
+                    <label for="video" class="form-label">video</label>
+                    <input type="file" name="video" class="form-control" id="video" required>
                   </div>
               </div>
               <div class="modal-footer">
