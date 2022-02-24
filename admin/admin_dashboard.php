@@ -474,7 +474,7 @@
                 <td><?php echo $row['category']; ?></td>
                 <td><?php echo $row['date']; ?></td>
                 <td><img height="100" src="uploadsImage/<?php echo $row['thumbnails']; ?>" alt=""></td>
-                <td><?php echo $row['video']; ?></td>
+                <td><video height="100" src="video/<?php echo $row['video']; ?>" autobuffer autoloop loop controls></video></td>
                 <td>
                   <a href="#" type="button" class="btn btn-primary" data-bs-toggle="modal"
                     data-bs-target="#updateuser<?php echo $row['id']; ?>">

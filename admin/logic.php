@@ -147,69 +147,6 @@ function uplode(){
     }
 }
 
-
-// function uplode(){
-//     if (isset($_POST['uplode'])) {
-
-//         $title = $_POST['title'];
-//         $author = $_POST['author'];
-//         $category = $_POST['category'];
-//         $date = $_POST['date']; 
-//         // $thumbnails = $_POST['thumbnails'];
-//         // $video = $_POST['video'];
-//         // 
-        
-//         global $target_file;
-//         global $targetdir;
-
-//         $targetdir = "uploadsImage/";
-//         $target_file = basename($_FILES["thumbnails"]['name']);
-//         $imageExt = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-//         $ekstensionFIle = array("jpg", "jpeg", "png");
-
-//         if (!file_exists($_FILES["thumbnails"]["tmp_name"])) {
-//             $resMessage = array(
-//                 "status" => "alert danger",
-//                 "Message" => "select image to uplode"
-//             );
-//         }else if (!in_array($imageExt, $ekstensionFIle)) {
-//             $resMessage = array(
-//                 "status" => "alert danger",
-//                 "Message" => "allowed format .jpg , .jpeg. png"
-//             );
-//         }else if ($_FILES["thumbnails"]["size"] > 2097152) {
-//             $resMessage = array(
-//                 "status" => "alert danger",
-//                 "Message" => "size is to large"
-//             );
-//         }else if (file_exists($target_file)) {
-//             $resMessage = array(
-//                 "status" => "alert danger",
-//                 "Message" => "file already exist"
-//             );
-//         } else{
-//             if (move_uploaded_file($_FILES["thumbnails"]["tmp_name"], $targetdir.$target_file)) {
-
-//                 $sql = "INSERT INTO video (title, author, category, date, thumbnails ) VALUES ('$title', '$author', '$category', '$date', '$target_file')";
-//                 global $conn2;
-//                 $stmt = $conn2->prepare($sql);
-//                 if ($stmt->execute()) {
-//                     $resMessage = array(
-//                         "status" => "alert-success",
-//                         "Message" => "image uplode successfully"
-//                     );
-//                 }
-//             }else{
-//                 $resMessage = array(
-//                 "status" => "alert danger",
-//                 "Message" => "image coudn't be uplode"
-//             );
-//             }
-//         }
-//     }
-// }
-
-
 function edit(){
     if (isset($_POST['edit'] )) {
         $id = $_POST['id'];

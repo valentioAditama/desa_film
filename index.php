@@ -1,3 +1,8 @@
+<?php 
+  require "admin/logic.php";
+  connectDB();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,15 +44,23 @@
        <div class="container">
          <a href="" class="btn btn-danger" style="border-radius: 10px;">TOP FILM</a>
 
+         <?php 
+         global $conn2;
+         $showdata = 'SELECT * FROM video';
+         $result = mysqli_query($conn2, $showdata);
+         while ($row = mysqli_fetch_array($result)) {
+         ?>
+
             <div class="row row-cols-1 row-cols-md-6 mt-4">
                 <div class="col mb-2">
                   <a href="review.php">
                     <div class="card">
-                        <img src="wp5722720-pixars-onward-wallpapers.jpg" class="card-img-top" alt="">
+                        <img src="admin/uploadsImage/<?php echo $row['thumbnails']; ?>" class="card-img-top" alt="">
                     </div>
                   </a>
                 </div>
             </div>
+          <?php } ?>
       </div>
 
 </body>
