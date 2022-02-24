@@ -43,24 +43,22 @@
         
        <div class="container">
          <a href="" class="btn btn-danger" style="border-radius: 10px;">TOP FILM</a>
-
-         <?php 
-         global $conn2;
-         $showdata = 'SELECT * FROM video';
-         $result = mysqli_query($conn2, $showdata);
-         while ($row = mysqli_fetch_array($result)) {
-         ?>
-
             <div class="row row-cols-1 row-cols-md-6 mt-4">
+              <?php 
+          global $conn2;
+                $showdata = 'SELECT * FROM video';
+                $result = mysqli_query($conn2, $showdata);
+                while($row = mysqli_fetch_array($result)){
+         ?>
                 <div class="col mb-2">
-                  <a href="review.php">
+                  <a href='review.php?id=<?php echo $row['id']; ?>'>
                     <div class="card">
-                        <img src="admin/uploadsImage/<?php echo $row['thumbnails']; ?>" class="card-img-top" alt="">
+                        <img src="admin/uploadsImage/<?php echo $row['thumbnails']; ?>" class="card-img-top" height="200" alt="">
                     </div>
                   </a>
                 </div>
-            </div>
           <?php } ?>
+            </div>
       </div>
 
 </body>

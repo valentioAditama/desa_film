@@ -119,7 +119,7 @@ function uplode(){
                 "status" => "alert danger",
                 "Message" => "image coudn't be uplode"
             );
-            }
+        }   
 
         // if (!file_exists($_FILES["thumbnails"]["tmp_name"])) {
         //     $resMessage = array(
@@ -171,4 +171,13 @@ function logout(){
     header("Location: index.php");
 }
 
+
+// function review(){
+//     if (isset($_GET)) {
+//         $id = $_GET['id'];
+//         $sql = "SELECT * FROM video WHERE id='$id' "
+//         global $conn2;
+//         $result = mysqli_query($conn2, $sql);
+//     }
+// }
 ?>
