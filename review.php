@@ -1,9 +1,12 @@
 <?php 
   require "admin/logic.php";
   connectDB();
-  if (isset($_GET)) {
-        $id = $_GET['id'];
-    }
+  if (isset($_GET['id'])) {
+      $conn = mysqli_connect("localhost", "root", "", "desafilm");
+      $id = $_GET['id'];
+      $query = "SELECT * FROM video WHERE id='$id'";
+      mysqli_query($conn, $query);
+   }
 
 ?>
 <!DOCTYPE html>
@@ -21,7 +24,7 @@
 </head>
 <body style="background-color:  rgb(25, 29, 29);">
     <nav class="navbar navbar-expand-sm navbar-dark" style="background-color: rgb(22, 18, 18);">
-        <a class="navbar-brand" href="home.html">Desa Film </a>
+        <a class="navbar-brand" href="index.php">Desa Film </a>
         <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
             aria-expanded="false" aria-label="Toggle navigation"></button>
         <div class="collapse navbar-collapse" id="collapsibleNavId">
@@ -39,19 +42,42 @@
             </form>
         </div>
     </nav>
-    <?php 
+      <?php 
      global $conn2;
-                $showdata = 'SELECT * FROM video ORDER BY id ASC';
+     $id = $_GET['id'];
+                $showdata = "SELECT * FROM video WHERE id='$id'";
                 $result = mysqli_query($conn2, $showdata);
                 while($row = mysqli_fetch_array($result)){
     ?>
-    <div class="container">
-      <video src="admin/video/<?php echo $row['video']; ?>" autobuffer autoloop loop controls></video>
-  </div>
+     <div class="container-fluid text-center p-5">
+      <h3 class="text-center text-light"><?php echo $row['title'] ?></h3>
+      <div class="d-flex justify-content-around">
+        <div class="text-light">
+            <p>Category: <?php echo $row['category'] ?></p> 
+        </div>
+        <div class="text-light">
+          <p>Publish: <?php echo $row['date'] ?></p> 
+        </div>
+      </div>
+      <video src="admin/video/<?php echo $row['video']; ?>" height="800" autobuffer autoloop loop controls></video>
+     </div>
+     <div class="container">
+       <div class="d-flex align-items-center justify-content-around">
+         <div>
+           <img src="admin/uploadsImage/<?php echo $row['thumbnails'] ?>" height="800" class="p-3" alt="">
+         </div>
+         <div class="align-self-centrer text-left">
+           <h5 class="text-light">Title : <?php echo $row['title'] ?></h5>
+           <h5 class="text-light">category : <?php echo $row['category'] ?></h5>
+           <h5 class="text-light">Date Publish : <?php echo $row['date'] ?></h5>
+           <h5 class="text-light">Publish Author : <?php echo $row['author'] ?></h5>
+         </div>
+       </div>
+     </div>
 
 <?php } ?>
 
-
+<!-- 
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-6">
@@ -90,7 +116,7 @@
           <iframe class="embed-responsive-item mt-3" src="https://youtube.com/embed/gn5QmllRCn4" allowfullscreen=""></iframe>
         </div>
       </div>
-    </div>
+    </div> -->
 
 
 </body>
