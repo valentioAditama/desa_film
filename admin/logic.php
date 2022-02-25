@@ -154,13 +154,15 @@ function edit(){
         $author = $_POST['author'];
         $category = $_POST['category'];
         $date = $_POST['date'];
-        $thumbnails = $_POST['thumbnails'];
-        $video = $_POST['video'];
 
-        global $conn2;
+        $targetdir = "uploadsImage/";
+        $target_file = basename($_FILES["thumbnails"]['name']);
+        $imageExt = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+        $ekstensionFIle = array("jpg", "jpeg", "png");
+        $image = $_FILES["thumbnails"]["tmp_name"];
         
-        $sql = "UPDATE video SET title='$title', author='$author', category='$category', date='$date', thumbnails='$thumbnails', video='$video' WHERE id=$id";       
-        mysqli_query($conn2, $sql);
+        $sql = "UPDATE video SET title='$title', author='$author', category='$category', date='$date', thumbnails='$thumbnails', video='$video' WHERE id=$id";
+          mysqli_query($conn2, $sql);
         header("location: admin_dashboard.php");
     }
 }
