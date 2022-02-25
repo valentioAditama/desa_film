@@ -155,17 +155,57 @@ function edit(){
         $category = $_POST['category'];
         $date = $_POST['date'];
 
-        $targetdir = "uploadsImage/";
-        $target_file = basename($_FILES["thumbnails"]['name']);
-        $imageExt = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-        $ekstensionFIle = array("jpg", "jpeg", "png");
-        $image = $_FILES["thumbnails"]["tmp_name"];
-        
-        $sql = "UPDATE video SET title='$title', author='$author', category='$category', date='$date', thumbnails='$thumbnails', video='$video' WHERE id=$id";
-          mysqli_query($conn2, $sql);
+        $folderimage = "uploadsImage/";
+        $gambar = $_FILES['thumbnails']['tmp_name'];
+        $name_gambar = $_FILES['thumbnails']['name'];
+        global $conn2;
+
+        if (move_uploaded_file($gambar, $folderimage.$name_gambar)) {
+          $sql = "UPDATE video SET title='$title', author='$author', category='$category', date='$date', thumbnails='$name_gambar', video='$video' WHERE id=$id";       
+        mysqli_query($conn2, $sql);
         header("location: admin_dashboard.php");
+        }
     }
 }
+
+// function editImage(){
+//     if (isset($_GET['id'])) {
+//         $id = $_GET['id'];
+//         $img = "SELECT * FROM video WHERE id='$id'";
+//         $no_of_rows = $img->num_rows;
+//         if (!$no_of_rows) {
+//             die("image not found");
+//         }
+//     } else{
+//         die("imge not found");
+//     }
+
+//     if (isset($_POST['uplode'])) {
+//         $error = false;
+//         $status = "";
+
+//         if (!empty($_FILES["thumbnails"]["name"])) {
+
+//         $target_file = basename($_FILES["thumbnails"]['name']);
+//         $imageExt = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+//         $ekstensionFIle = array("jpg", "jpeg", "png");
+//         if (in_array($imageExt, $ekstensionFIle)) {
+//             $image = $_FILES["thumbnails"]["tmp_name"]; 
+//             $img_content = addslashes(file_get_contents($image));
+//             $query = "UPDATE video SET thumbnails='$img_content' WHERE id='$id'";
+//             global $conn2;
+//             $result = mysqli_query($conn2, $query);
+//             if ($result) {
+//                 $status = "image has been successfully";
+//             }else{
+//                 $status = "something went wrong when updating";
+//             }
+//             }else{
+//                 $status = 'Only support jpg, jpeg, png';
+//             }
+//         }
+//     }
+// }
 
 function logout(){
     session_start();
