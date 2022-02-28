@@ -4,8 +4,8 @@
   connectDB();
   login();
   auth();
-  edit();
   uplode();
+  edit();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -46,7 +46,7 @@
 
 
 <body class="g-sidenav-show  bg-gray-200">
-  <aside
+<!--   <aside
     class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark"
     id="sidenav-main">
     <div class="sidenav-header">
@@ -68,7 +68,7 @@
             </div>
             <span class="nav-link-text ms-1">Dashboard</span>
           </a>
-        </li>
+        </li> -->
         <!-- <li class="nav-item">
           <a class="nav-link text-white " href="./pages/tables.html">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -136,14 +136,14 @@
             <span class="nav-link-text ms-1">Sign Up</span>
           </a>
         </li> -->
-      </ul>
+  <!--     </ul>
     </div>
     <div class="sidenav-footer position-absolute w-100 bottom-0 ">
       <div class="mx-3">
         <a class="btn btn-danger mt-4 w-100" href="logout.php" type="button">Logout</a>
       </div>
     </div>
-  </aside>
+  </aside> -->
   <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
     <!-- Navbar -->
     <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur"
@@ -494,7 +494,7 @@
               <h5 class="modal-title" id="staticBackdropLabel">Edit Data</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="" method="post">
+            <form action="" method="post" enctype="multipart/form-data">
               <div class="modal-body">
                 <div class="mb-3">
                   <input type="text" name="id" id="id" class="form-control" id="exampleInputEmail1"
@@ -531,7 +531,7 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" name="edit" id="edit" class="btn btn-primary">Update</button>
+                <button type="submit" name="update" class="btn btn-primary">Update</button>
               </div>
           </div>
           </form>
