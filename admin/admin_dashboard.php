@@ -400,6 +400,11 @@
         </div>
       </div>
       <div class="container-fluid">
+          <?php if (!empty($resMessage)) { ?>
+          <div class="alert <?php echo $resMessage['status']; ?> text-light text-center" role="alert">
+            <?php echo $resMessage['Message']; ?>
+          </div>
+          <?php }?>      
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
           Add Data
         </button>
