@@ -113,7 +113,7 @@ function uplode(){
 
         }else if ($_FILES["thumbnails"]["size"] > 2097152) {
             echo "<script>alert('error size is to big!')</script>";
-        }else if (!file_exists($target_file)) {
+        }else if (file_exists($target_file)) {
             echo "<script>alert('file already exist!')</script>";
         } else{
             if (move_uploaded_file($image, $targetdir.$target_file) == move_uploaded_file($video, $targetdirvideo.$target_filevideo)) {
@@ -122,16 +122,10 @@ function uplode(){
                 global $conn2;
                 $stmt = $conn2->prepare($sql);
                 if ($stmt->execute()) {
-                    $resMessage = array(
-                        "status" => "alert-success",
-                        "Message" => "image uplode successfully"
-                    );
+                    echo "<script>alert('Uplode be succesfully!')</script>";
                 }
             }else{
-                $resMessage = array(
-                "status" => "alert danger",
-                "Message" => "image coudn't be uplode"
-                );
+                echo "<script>alert('Uplode file failed!')</script>";
             }
         }
     }
@@ -166,25 +160,15 @@ function edit(){
         $id = $_POST['id'];
         global $conn2;
 
-        if ($video == $image) {
-            move_uploaded_file($video, "video/" . $target_filevideo);
-            $sql = "UPDATE video SET title='$title', author='$author', category='$category', date='$date', thumbnails='$target_file', video='$target_filevideo' WHERE id=$id";       
-            $run_update=mysqli_query($conn2, $sql);
-            
-            if ($run_update) {
-            echo "<script>alert('data berhasil di update')</script>";
+        if (!unlink($targetdir.$target_file)) {
+            echo "<script>alert('error, image cannont be delete ')</script>";
+
+            if (move_uploaded_file($image, $targetdir.$target_file)) {
+                $sql = "UPDATE video SET thumbnails='$target_file' WHERE id='$id'";
+                mysqli_query($conn2, $sql);            
+            }
         }else{
-            echo "<script>alert('data gagal di update')</script>";
-            echo var_dump($run_update);
-        }
-        } else{
-            move_uploaded_file($image, "uploadsImage/" . $target_file);
-             $sql = "UPDATE video SET title='$title', author='$author', category='$category', date='$date', thumbnails='$target_file', video='$target_filevideo' WHERE id=$id";       
-            $run_update=mysqli_query($conn2, $sql);            
-        }
-        if (move_uploaded_file($image, $targetdir.$target_file)) {
-            $sql = "UPDATE video SET thumbnails='$target_file' WHERE id='$id'";
-            mysqli_query($conn2, $sql);
+            echo "<script>alert('data dulu berhasil di ganti')</script>";
         }
 
         if (move_uploaded_file($video, $targetdirvideo.$target_filevideo)) {
@@ -196,7 +180,7 @@ function edit(){
         $sql = "UPDATE video SET title='$title', author='$author', category='$category', date='$date' WHERE id=$id";       
         mysqli_query($conn2, $sql);
     }
-}   
+}
 
 function logout(){
     session_start();
