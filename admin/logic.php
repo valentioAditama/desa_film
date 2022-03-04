@@ -196,7 +196,7 @@ function edit(){
         $sql = "UPDATE video SET title='$title', author='$author', category='$category', date='$date' WHERE id=$id";       
         mysqli_query($conn2, $sql);
     }
-}
+}   
 
 function logout(){
     session_start();
