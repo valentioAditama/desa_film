@@ -160,20 +160,7 @@ function edit(){
         $id = $_POST['id'];
         global $conn2;
 
-         if (!file_exists($_FILES["thumbnails"]["tmp_name"])) {
-            $resMessage = array(
-                "status" => "alert danger",
-                "Message" => "select image to uplode"
-            );
-        }else if (!in_array($imageExt, $ekstensionFIle)) {
-            echo "<script>alert('error! allowed ekstension image .jpg, .jpeg, .png')</script>";
-
-        }else if ($_FILES["thumbnails"]["size"] > 2097152) {
-            echo "<script>alert('error size is to big!')</script>";
-        }else if (!file_exists($target_file)) {
-            echo "<script>alert('file already exist!')</script>";
-        }else{
-            if (move_uploaded_file($image, $targetdir.$target_file)) {
+        if (move_uploaded_file($image, $targetdir.$target_file)) {
             $sql = "UPDATE video SET thumbnails='$target_file' WHERE id='$id'";
             mysqli_query($conn2, $sql);
         }
@@ -181,7 +168,7 @@ function edit(){
             $sql = "UPDATE video SET video='$target_filevideo' WHERE id='$id'";
             mysqli_query($conn2, $sql);
         
-            }
+            
         }
         
         $sql = "UPDATE video SET title='$title', author='$author', category='$category', date='$date' WHERE id=$id";       
