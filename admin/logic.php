@@ -101,9 +101,22 @@ function uplode(){
         $target_filevideo = basename($_FILES["video"]['name']);
         $videoExt = strtolower(pathinfo($target_filevideo, PATHINFO_EXTENSION));
         $ekstensionFIlevideo = array("mkv", "mp4", "webm");
-        $video = $_FILES["video"]["tmp_name"];
+        $video = $_FILES["video"]["tmp_name"];   
 
-        if (move_uploaded_file($image, $targetdir.$target_file) == move_uploaded_file($video, $targetdirvideo.$target_filevideo)) {
+        if (!file_exists($_FILES["thumbnails"]["tmp_name"])) {
+            $resMessage = array(
+                "status" => "alert danger",
+                "Message" => "select image to uplode"
+            );
+        }else if (!in_array($imageExt, $ekstensionFIle)) {
+            echo "<script>alert('error! allowed ekstension image .jpg, .jpeg, .png')</script>";
+
+        }else if ($_FILES["thumbnails"]["size"] > 2097152) {
+            echo "<script>alert('error size is to big!')</script>";
+        }else if (!file_exists($target_file)) {
+            echo "<script>alert('file already exist!')</script>";
+        } else{
+            if (move_uploaded_file($image, $targetdir.$target_file) == move_uploaded_file($video, $targetdirvideo.$target_filevideo)) {
 
                 $sql = "INSERT INTO video (title, author, category, date, thumbnails, video) VALUES ('$title', '$author', '$category', '$date', '$target_file', '$target_filevideo')";
                 global $conn2;
@@ -118,32 +131,9 @@ function uplode(){
                 $resMessage = array(
                 "status" => "alert danger",
                 "Message" => "image coudn't be uplode"
-            );
-        }   
-
-        // if (!file_exists($_FILES["thumbnails"]["tmp_name"])) {
-        //     $resMessage = array(
-        //         "status" => "alert danger",
-        //         "Message" => "select image to uplode"
-        //     );
-        // }else if (!in_array($imageExt, $ekstensionFIle)) {
-        //     $resMessage = array(
-        //         "status" => "alert danger",
-        //         "Message" => "allowed format .jpg , .jpeg. png"
-        //     );
-        // }else if ($_FILES["thumbnails"]["size"] > 2097152) {
-        //     $resMessage = array(
-        //         "status" => "alert danger",
-        //         "Message" => "size is to large"
-        //     );
-        // }else if (file_exists($target_file)) {
-        //     $resMessage = array(
-        //         "status" => "alert danger",
-        //         "Message" => "file already exist"
-        //     );
-        // } else{
-            
-        // }
+                );
+            }
+        }
     }
 }
 
@@ -192,32 +182,21 @@ function edit(){
              $sql = "UPDATE video SET title='$title', author='$author', category='$category', date='$date', thumbnails='$target_file', video='$target_filevideo' WHERE id=$id";       
             $run_update=mysqli_query($conn2, $sql);            
         }
+        if (move_uploaded_file($image, $targetdir.$target_file)) {
+            $sql = "UPDATE video SET thumbnails='$target_file' WHERE id='$id'";
+            mysqli_query($conn2, $sql);
+        }
+
+        if (move_uploaded_file($video, $targetdirvideo.$target_filevideo)) {
+            $sql = "UPDATE video SET video='$target_filevideo' WHERE id='$id'";
+            mysqli_query($conn2, $sql);
+        
+        }
+
+        $sql = "UPDATE video SET title='$title', author='$author', category='$category', date='$date' WHERE id=$id";       
+        mysqli_query($conn2, $sql);
     }
 }
-
-
-// function edit(){
-//     if (isset($_POST['edit'] )) {
-//         $title = $_POST['title'];
-//         $author = $_POST['author'];
-//         $category = $_POST['category'];
-//         $date = $_POST['date'];
-
-//         $folderimage = "uploadsImage/";
-//         $gambar = $_FILES['thumbnails']['tmp_name'];
-//         $name_gambar = $_FILES['thumbnails']['name'];
-//         global $conn2;
-
-//         if (isset($_GET['id'])) {
-//             if (move_uploaded_file($gambar, $folderimage.$name_gambar)) {
-//                 $id = $_GET['id'];
-//               $sql = "UPDATE video SET title='$title', author='$author', category='$category', date='$date', thumbnails='$name_gambar', video='$video' WHERE id=$id";       
-//             mysqli_query($conn2, $sql);
-//             header("location: admin_dashboard.php");
-//             }            
-//         }
-//     }
-// }
 
 function logout(){
     session_start();
