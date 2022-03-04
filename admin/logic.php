@@ -176,32 +176,21 @@ function edit(){
         $id = $_POST['id'];
         global $conn2;
 
-        if($video != "")
-        {
-            move_uploaded_file($video , "video/" . $target_filevideo);
-            $sql = "UPDATE video SET title='$title', author='$author', category='$category', date='$date', thumbnails='$target_file', video='$target_filevideo' WHERE id=$id";
-        }else
-        {
-            $sql = "UPDATE video SET title='$title', author='$author', category='$category', date='$date', thumbnails='$target_file', video='$target_filevideo' WHERE id=$id";
-        }
-
-        if ($image != "") {
-            move_uploaded_file($image , "uploadsImage/".$target_file);
-            $sql = "UPDATE video SET title='$title', author='$author', category='$category', date='$date', thumbnails='$target_file', video='$target_filevideo' WHERE id=$id";
-
-        }
-        else{
-            move_uploaded_file($image , "uploadsImage/$target_file");
-            $sql = "UPDATE video SET title='$title', author='$author', category='$category', date='$date', video='$target_filevideo' WHERE id=$id";            
-        }
-
-        $run_update=mysqli_query($conn2, $sql);
-
-        if ($run_update) {
+        if ($video == $image) {
+            move_uploaded_file($video, "video/" . $target_filevideo);
+            $sql = "UPDATE video SET title='$title', author='$author', category='$category', date='$date', thumbnails='$target_file', video='$target_filevideo' WHERE id=$id";       
+            $run_update=mysqli_query($conn2, $sql);
+            
+            if ($run_update) {
             echo "<script>alert('data berhasil di update')</script>";
         }else{
             echo "<script>alert('data gagal di update')</script>";
             echo var_dump($run_update);
+        }
+        } else{
+            move_uploaded_file($image, "uploadsImage/" . $target_file);
+             $sql = "UPDATE video SET title='$title', author='$author', category='$category', date='$date', thumbnails='$target_file', video='$target_filevideo' WHERE id=$id";       
+            $run_update=mysqli_query($conn2, $sql);            
         }
     }
 }

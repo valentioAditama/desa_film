@@ -1,4 +1,4 @@
-<?php 
+ <?php 
   require "logic.php";
   require "hapus.php";
   connectDB();
