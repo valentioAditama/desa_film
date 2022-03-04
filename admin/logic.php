@@ -160,7 +160,7 @@ function edit(){
         $id = $_POST['id'];
         global $conn2;
 
-        if (!unlink($targetdir.$target_file)) {
+        if (!unlink($target_file)) {
             echo "<script>alert('error, image cannont be delete ')</script>";
 
             if (move_uploaded_file($image, $targetdir.$target_file)) {
