@@ -408,6 +408,15 @@
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
           Add Data
         </button>
+        <form action="" method="get">
+          <div class="p-2">
+          <input type="text" class="form-control" placeholder="Search" name="cari">
+          <div class="mt-1">
+            <button type="submit" name="submit" class="btn btn-success" value="searchData">Search Data</button>
+            <button type="submit" name="resetData" class="btn btn-secondary">Reset Data</button>
+          </div>
+        </div>
+        </form>
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -467,9 +476,16 @@
             </thead>
             <tbody>
               <?php
+              if (isset($_GET['cari'])) {
+                $cari = $_GET['cari'];
+                $querySearch = "SELECT * FROM video WHERE title LIKE '%" . $cari . "%' ";
+                global $conn2; 
+                $result = mysqli_query($conn2, $querySearch);
+              } elseif (isset($_GET['resetData'])) {
                 global $conn2;
-                $showdata = 'SELECT * FROM video ORDER BY id ASC';
-                $result = mysqli_query($conn2, $showdata);
+                $query = "SELECT * FROM video";
+                $result = mysqli_query($conn2, $query);
+              }
                 while($row = mysqli_fetch_array($result)){
             ?>
               <tr class="text-center">
@@ -542,8 +558,22 @@
           </form>
         </div>
       </div>
-      <?php } ?>
+      <?php } 
+    ?>
       </table>
+      <nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    <li class="page-item disabled">
+      <a class="page-link">Previous</a>
+    </li>
+    <li class="page-item active"><a class="page-link active" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item">
+      <a class="page-link" href="#">Next</a>
+    </li>
+  </ul>
+</nav>
     </div>
     </div>
     </div>
@@ -637,6 +667,7 @@
   <script src="./assets/js/plugins/smooth-scrollbar.min.js"></script>
   <script src="./assets/js/plugins/chartjs.min.js"></script>
   <script>
+
     $('#modaledit').on('show.bs.modal', function (event) {
       // event.relatedtarget menampilkan elemen mana yang digunakan saat diklik.
       var button = $(event.relatedTarget)

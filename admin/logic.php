@@ -103,18 +103,12 @@ function uplode(){
         $ekstensionFIlevideo = array("mkv", "mp4", "webm");
         $video = $_FILES["video"]["tmp_name"];   
 
-        if (!file_exists($_FILES["thumbnails"]["tmp_name"])) {
-            $resMessage = array(
-                "status" => "alert danger",
-                "Message" => "select image to uplode"
-            );
+        if (empty($_FILES["thumbnails"]["tmp_name"])) {
+            echo "<script>alert('select image to uplode')</script>";
         }else if (!in_array($imageExt, $ekstensionFIle)) {
             echo "<script>alert('error! allowed ekstension image .jpg, .jpeg, .png')</script>";
-
-        }else if ($_FILES["thumbnails"]["size"] > 2097152) {
+        }else if ($_FILES["thumbnails"]["size"] > 10097152) {
             echo "<script>alert('error size is to big!')</script>";
-        }else if (!file_exists($target_file)) {
-            echo "<script>alert('file already exist!')</script>";
         } else{
             if (move_uploaded_file($image, $targetdir.$target_file) == move_uploaded_file($video, $targetdirvideo.$target_filevideo)) {
 
@@ -147,6 +141,7 @@ function edit(){
 
         $targetdir = "uploadsImage/";
         $target_file = basename($_FILES["thumbnails"]['name']);
+        $target_fileimage = $_FILES["thumbnails"]['name'];
         $imageExt = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
         $ekstensionFIle = array("jpg", "jpeg", "png");
         $image = $_FILES["thumbnails"]["tmp_name"];
@@ -160,19 +155,46 @@ function edit(){
         $id = $_POST['id'];
         global $conn2;
 
-        if (move_uploaded_file($image, $targetdir.$target_file)) {
+        if (empty($_FILES["thumbnails"]["tmp_name"])) {
+            echo "<script>alert('Select Image to uplode')</script>";
+        }else if (!in_array($imageExt, $ekstensionFIle)){
+            echo "<script>alert('error! allowrd ekstension image .jpg .jpeg .png')</script>";
+        }else if ($_FILES["thumbnails"]["size"] > 2097152 ) {
+            echo "<script>alert('error size is to big!')</script>";
+        }else{
+            if (move_uploaded_file($image, $targetdir.$target_file)) {
             $sql = "UPDATE video SET thumbnails='$target_file' WHERE id='$id'";
             mysqli_query($conn2, $sql);
+            }else{
+                echo "<script>alert('Uplode file failed')</script>";
+            }
         }
-        if (move_uploaded_file($video, $targetdirvideo.$target_filevideo)) {
-            $sql = "UPDATE video SET video='$target_filevideo' WHERE id='$id'";
-            mysqli_query($conn2, $sql);
-        
-            
+
+        if (empty($_FILES["video"]["tmp_name"])) {
+            echo "<script>alert('Select video to uplode')</script>";
+        }elseif (!in_array($videoExt, $ekstensionFIlevideo)){
+            echo "<script>alert('error! allowrd ekstension video .mp4 .mkv .wemb')</script>";
+        }elseif ($_FILES["video"]["size"] > 3112097152) {
+            echo "<script>alert('Uplode file is to big')</script>";
+        }else{
+                if (move_uploaded_file($video, $targetdirvideo.$target_filevideo)) {
+                $sql = "UPDATE video SET video='$target_filevideo' WHERE id='$id'";
+                mysqli_query($conn2, $sql);
+            }
         }
-        
+
+        if (empty($_POST['title'])) {
+            echo "<script>alert('title is not allowed for empty files!')</script>";
+        }elseif (empty($_POST['author'])) {
+            echo "<script>alert('author is not allowed for empty files!')</script>";
+        }elseif (empty($_POST['category'])) {
+            echo "<script>alert('category is not allowed for empty files!')</script>";
+        }elseif (empty($_POST['date'])) {
+            echo "<script>alert('date is not allowed for empty files')</script>";
+        }else{
         $sql = "UPDATE video SET title='$title', author='$author', category='$category', date='$date' WHERE id=$id";       
         mysqli_query($conn2, $sql);
+        }
     }
 }
 
@@ -181,4 +203,5 @@ function logout(){
     session_unset('user');
     header("Location: index.php");
 }
+
 ?>
