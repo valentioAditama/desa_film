@@ -1,4 +1,4 @@
- <?php 
+<?php 
   require "logic.php";
   require "hapus.php";
   connectDB();
@@ -477,15 +477,56 @@
             <tbody>
               <?php
               if (isset($_GET['cari'])) {
-                $cari = $_GET['cari'];
+                 $cari = $_GET['cari'];
                 $querySearch = "SELECT * FROM video WHERE title LIKE '%" . $cari . "%' ";
+                global $querySearch;   
                 global $conn2; 
-                $result = mysqli_query($conn2, $querySearch);
-              } elseif (isset($_GET['resetData'])) {
-                global $conn2;
-                $query = "SELECT * FROM video";
-                $result = mysqli_query($conn2, $query);
+                $batas = 10;
+              $halaman = isset($_GET['halaman'])?(int)$_GET['halaman'] : 1;
+              $halaman_awal = ($halaman>1) ? ($halaman * $batas) - $batas : 0;
+        
+              $previous = $halaman - 1;
+              $next = $halaman + 1;
+        
+              $data = mysqli_query($conn2, "SELECT * FROM video");
+              $jumlah_data = mysqli_num_rows($data);
+              $total_halaman = ceil($jumlah_data/$batas);
+        
+              $result = mysqli_query($conn2, $querySearch);
+              $nomor = $halaman_awal + 1; 
+              }else{
+                // $query = "SELECT * FROM video";
+                // $result = mysqli_query($conn2, $query);
+
+                
+              $batas = 10;
+              $halaman = isset($_GET['halaman'])?(int)$_GET['halaman'] : 1;
+              $halaman_awal = ($halaman>1) ? ($halaman * $batas) - $batas : 0;
+        
+              $previous = $halaman - 1;
+              $next = $halaman + 1;
+        
+              $data = mysqli_query($conn2, "SELECT * FROM video");
+              $jumlah_data = mysqli_num_rows($data);
+              $total_halaman = ceil($jumlah_data/$batas);
+        
+              $result = mysqli_query($conn2, "SELECT * FROM video LIMIT $halaman_awal, $batas");
+              $nomor = $halaman_awal + 1; 
               }
+
+              // $batas = 10;
+              // $halaman = isset($_GET['halaman'])?(int)$_GET['halaman'] : 1;
+              // $halaman_awal = ($halaman>1) ? ($halaman * $batas) - $batas : 0;
+        
+              // $previous = $halaman - 1;
+              // $next = $halaman + 1;
+        
+              // $data = mysqli_query($conn2, "SELECT * FROM video");
+              // $jumlah_data = mysqli_num_rows($data);
+              // $total_halaman = ceil($jumlah_data/$batas);
+        
+              // $result = mysqli_query($conn2, "SELECT * FROM video LIMIT $halaman_awal, $batas");
+              // $nomor = $halaman_awal + 1; 
                 while($row = mysqli_fetch_array($result)){
             ?>
               <tr class="text-center">
@@ -558,19 +599,29 @@
           </form>
         </div>
       </div>
-      <?php } 
-    ?>
+    <?php 
+
+                }
+                ?>
       </table>
       <nav aria-label="Page navigation example">
   <ul class="pagination justify-content-center">
-    <li class="page-item disabled">
-      <a class="page-link">Previous</a>
-    </li>
-    <li class="page-item active"><a class="page-link active" href="#">1</a></li>
-    <li class="page-item"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
     <li class="page-item">
-      <a class="page-link" href="#">Next</a>
+    <a class="page-link" <?php global $previous; if($halaman > 1){
+       echo "href='?halaman=$previous'"; 
+       } ?>>Previous</a>
+    </li>
+<?php 
+  for ($x=1; $x<=$total_halaman ; $x++) { 
+  ?>
+    <li class="page-item "><a class="page-link" href="?halaman=<?php echo $x;?>" style="text-decoration: none;"><?php echo $x; ?></a></li>
+<?php 
+  }
+?>
+    <li class="page-item">
+    <a class="page-link" <?php global $next; if($halaman > 1){
+       echo "href='?halaman=$next'"; 
+    } ?>>Next</a>
     </li>
   </ul>
 </nav>
